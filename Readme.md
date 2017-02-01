@@ -1,3 +1,8 @@
+Author : Gavin Davies
+> This e-book was originally published in 2015 by Five Simple Steps. Five Simple Steps have closed their online store and graciously returned the rights to the authors, so we are offering this book for free.
+> See the original Article on [Radify.io blog post "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
+> It's put on Github for translate and improvement purpose
+
 # Introduction
 
 This book is aimed at designers who also do front end development. These days, it seems that we all wear multiple hats in our jobs!
