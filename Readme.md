@@ -202,6 +202,56 @@ Look over the sample project for this book at https://github.com/gavD/5ss-build-
 
 # Automating your workflow
 
+At this point, the areas in green are automated:
+
+![alt text](img/automating-your-workflow-1.png?raw=true "Schema 1")
+
+Design and editing source code in src isn’t automatable - if it were, robots would be doing our jobs. Therefore, we will omit these workflow stages from the future diagrams. The rest of these tasks, however, we can use build tools for.
+
+## Task watch - automating your automation
+
+Right now, you are probably running the tool on the command line every time you make a change. This is pretty laborious, and also error prone - chances are you will make a change, forget to run the tool, reload the browser, and be confused as to why your changes aren’t showing up… I know I’ve certainly done that!
+
+Thankfully, we can automate this. We will create a new task, watch, which will monitor the src directory, and whenever anything changes in there, it automatically runs the default task, which has the build task as a dependency:
+
+![alt text](img/automating-your-workflow-2.png?raw=true "Schema 1")
+
+Now, the build tool runs automatically when anything changes in src, so that any time you update your source code, the website is regenerated automatically. This automates the build:
+
+![alt text](img/automating-your-workflow-3.png?raw=true "Schema 1")
+
+## Task serve - run a local server
+
+Instead of constantly pushing code up to a web server, build tools allow you to run a server locally, which serves the build directory, so you’re seeing the compressed, minified, concatenated versions of files, just like your users will. This means that we can remove the "Push to server" stage of the workflow entirely:
+
+![alt text](img/automating-your-workflow-4.png?raw=true "Schema 1")
+
+> Don’t worry if you were hoping to cover deployment in your build workflow; we will talk about deployment later.
+
+## Task refresh-browser: refresh your browser
+
+One task that we spend a lot of time doing is making changes, then going over to a browser and reloading the page. A LiveReload will ensure that when a build occurs in response to a change to src, not only is the build task called, but also the browser is automatically reloaded:
+
+![alt text](img/automating-your-workflow-5.png?raw=true "Schema 1")
+
+We’ve now automated a huge amount of the workflow:
+
+![alt text](img/automating-your-workflow-6.png?raw=true "Schema 1")
+
+## What do we use to write these tasks?
+
+| Task	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| watch| gulp-watch | grunt-contrib-watch |
+| serve| gulp-connect | grunt-contrib-connect |
+| refresh-browser| gulp-livereload | grunt-contrib-watch (built in) |
+
+
+		
+		
+		
+
+
 
 
 
