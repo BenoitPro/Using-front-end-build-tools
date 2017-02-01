@@ -3,7 +3,7 @@ Author : Gavin Davies
 
 > See the original Article on [Radify.io blog post "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
 
-> It's put on Github for translate and improvement purpose, feel free to pull request or discuss any mistake.
+> It has been put on Github for translate and improvement purpose, feel free to pull request or discuss any mistake.
 
 # Introduction
 
