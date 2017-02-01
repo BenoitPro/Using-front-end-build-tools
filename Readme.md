@@ -115,5 +115,94 @@ The build file tells the build tool what to do. It defines a set of tasks that t
 | Build file (Gulp)	| /home/user/myproject/Gulpfile.js | C:\Users\user\myproject\Gulpfile.js |
 | Build file (Grunt) | /home/user/myproject/Gruntfile.js | C:\Users\user\myproject\Gruntfile.js |
 		
+## Tasks
+Build tools run tasks. A task is simply an action or a set of actions that can be performed. For example, a task could be "copy files from src to build".
+
+In most build tools, tasks are composable, meaning that a task can depend on or delegate to other tasks. For example, task copy-assets could depend on task clean, so that whenever copy-assets is run, clean is automatically run beforehand. The advantage of composability is that the code for the clean task won’t be repeated every time you need to call it.
+
+Tasks are stored inside the build file; here is an example of a build file that contains some tasks:
+
+![alt text](img/automated-workflows-build-file.png?raw=true "Schema 1")
+
+### Anatomy of a task
+
+A task generally has these attributes:
+
+#### Name
+The name of the task. Most tasks can be run in isolation by passing the task’s name to the tool on the command line. For example, grunt clean or gulp clean would run the clean task.
+#### Description
+Some build tools supply an optional task description, an explanation of the task that doubles as documentation for people on your team.
+#### Dependencies
+A list of tasks that must be run before a certain task can run. For example, the build task may have clean as a dependency, meaning that if you call the build task, the clean task automatically runs first.
+#### Functionality
+This is the specific code or configuration that you write to implement your task. For example, the scripts task could minify and concatenate a set of files from src and then copy them into build/js.
+
+# Creating your first build file
+
+We will create a build file that automates the workflow that we have defined. I’m not going to write the actual code here, as it will differ based for each build tool, but I will represent it in an abstract manner.
+
+These tasks will:
+
+* Clean the build directory
+* Compress and minify assets
+* Copy the transformed results into the build directory
+
+Here is the order in which the tasks will run:
+
+![alt text](img/your-first-build-file-task-order.png?raw=true "Schema 1")
+
+> Some build tools can run tasks in parallel; others will run them one at a time in sequence. In the diagram above, we have assumed that we can run scripts, styles, images and html in parallel.
+
+## Explanation
+
+### Task clean - cleans out build directory
+
+This simple task cleans out the build directory by deleting everything in it.
+
+### Task build - calls the subtasks
+
+Depends on task clean via the dependency mechanism discussed earlier, so when build is called, it first triggers clean. After clean completes, the build task delegates to the scripts, styles, images and html tasks.
+
+### Task scripts - transforms javascript
+
+Takes src/js/a.js and src/js/b.js, minifies them, then concatenates them into build/js/all.min.js.
+
+### Task styles - transforms CSS
+
+Takes src/css/first.css and src/css/second.css, minifies them, then concatenates them into build/css/all.min.css. For designers writing in Sass or LESS, styles will also compile those files into CSS before minification and concatenation.
+
+### Task images - compresses images
+
+Takes the images in src/img, compresses them, and outputs them to build/img.
+
+### Task html - transforms HTML
+
+Takes src/index.html and minifies it. It then modifies the HTML, directing the asset paths to build, not src. The output is then directed to build/index.html.
+
+Once the build task completes, you have your complete website, ready for use in the build directory.
+
+## Plugins
+
+For each task, there is an installable plugin for your build tool. This is great because it means you usually have to write very little code.
+
+The Gulp team maintains a list of verified plugins and their community ensures that there is only one plugin for each task. In contrast, the Grunt community often offers a number of alternatives for each plugin. The grunt-contrib-* plugins are the best starting point because they are officially maintained.
+
+> The specifics of how to install and use these plugins are beyond the scope of this book.
+
+
+| Task	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| clean| del | grunt-contrib-clean |
+| scripts| gulp-uglify | grunt-contrib-uglify |
+| styles| gulp-minify-css | grunt-contrib-cssmin |
+| images| gulp-imagemin | grunt-contrib-imagemin |
+| html| gulp-minify-html | grunt-contrib-htmlmin |
+
+Look over the sample project for this book at https://github.com/gavD/5ss-build-tools. There, you will find example build files for Grunt and Gulp that follow this approach.
+
+# Automating your workflow
+
+
+
 
 
