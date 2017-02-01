@@ -43,9 +43,77 @@ A common convention is to have two separate directories in the root (top level) 
 > In some projects, build may be called dist, which is short for "distribution".
 
 | Directory	OSX/Linux	| Windows 
-| ------------- |:-------------:| 
-| Source	/home/user/myproject/src | C:\Users\user\myproject\ |
+| ------------- |:-------------| 
+| Source	/home/user/myproject/src | C:\Users\user\myproject\src |
 | Build	/home/user/myproject/build | C:\Users\user\myproject\build |
- 
+
+Once build and src are separated, move any existing project files into the src directory. These are the files that you will edit. Everything in build will be generated using your build tool - we never edit files in build directly. Hands off!
+
+> It’s best to test something that’s as representative as possible of what the end-user will receive. Therefore, it’s a good practice to test in build, not in src, so as to catch any potential problems that the transformations might have introduced.
+
+A full treatment of SCM (Software Configuration Management) is outside the scope of this book, but I will make one suggestion: when using a version control tool like Git, Mercurial, or Subversion, add the build directory to your SCM’s ignore file. You do not want to commit anything in build - it’s considered volatile. In SCM, only the source files are committed to your SCM, and these generate the build. This keeps commit logs clean and uncluttered by the build assets.
+
+> To learn about Git, check out [Version Control with Git by Ryan Taylor](http://www.fivesimplesteps.com/products/version-control-with-git)
+
+Here is how the asset pipeline might look:
+
+![alt text](img/workflow-asset-pipeline-build-level.png?raw=true "Schema 1")
+
+Assuming that you have two javascript files, src/js/a.js and src/js/b.js, and two CSS files, src/css/first.css and src/css/second.css, the build would output build/js/all.min.js and build/css/all.min.css:
+
+![alt text](img/workflow-asset-pipeline-build-level-detail.png?raw=true "Schema 1")
+
+Because we have concatenated multiple assets into single files, we will have to replace the references to the assets. In src/index.html, we have four such references:
+
+```html
+<head>
+  <script src="/js/a.js"></script>
+  <script src="/js/b.js"></script>
+  <link rel="stylesheet" media="all" href="/css/first.css">
+  <link rel="stylesheet" media="all" href="/css/second.css">
+</head>
+```
+
+In build/index.html, this becomes just two references:
+
+
+```html
+<head>
+  <script src="/js/all.min.js"></script>
+  <link rel="stylesheet" media="all" href="/css/all.min.css">
+</head>
+```
+
+At this point, the minified and concatenated assets, bundled up cleanly in the build directory, are ready to be pushed to the server. There are some problems, though:
+
+* Isn’t this process unnecessarily complex?
+* How do we know if there are problems with the code?
+* How do we manage this process?
+
+ Here is where we introduce the wonderful world of build tools!
+
+# Automated workflows with build tools
+
+A build tool is software that automates the transformation of source code into a deliverable. Any time a change is made to the source code, the build tool should be run - usually from the command line. The build tool is how we implement asset pipelines:
+
+![alt text](img/automated-workflows-asset-pipeline-with-tool.png?raw=true "Schema 1")
+
+## Available build tools
+
+There are many build tools available. This book focuses on the web and therefore looks at those tailored to HTML, CSS, and JavaScript. Grunt and Gulp, the two most popular, will be our focus because of their widespread adoption. There are many others, such as Broccoli, Middleman and Brunch, but this book’s principles apply to all build tools.
+
+> If your needs are simple, the package manager NPM can be used as a build tool - NPM along with Browserify can be quite a powerful combination. See http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/ for details.
+
+## The build file
+
+The build file tells the build tool what to do. It defines a set of tasks that the build tool can perform. In Grunt, this file is called Gruntfile.js. In Gulp, it is called Gulpfile.js. As a rule, the build file goes at the root of the project, above the build and src directories.
+
+| Item	| OSX/Linux | Windows 
+| ------------- |:-------------|:-------------| 
+| Source dir | /home/user/myproject/src | C:\Users\user\myproject\src |
+| Build dir | /home/user/myproject/build | C:\Users\user\myproject\build |
+| Build file (Gulp)	| /home/user/myproject/Gulpfile.js | C:\Users\user\myproject\Gulpfile.js |
+| Build file (Grunt) | /home/user/myproject/Gruntfile.js | C:\Users\user\myproject\Gruntfile.js |
+		
 
 
