@@ -18,4 +18,4 @@ Workflow is the set of tasks that one goes through when doing a job. Everyone’
 
 In developing websites and applications, you probably have phases that look something like this:
 
-![alt text](/img/icon48.png "Schema 1")
+![alt text](img/workflow-basic.png?raw=true "Schema 1")
