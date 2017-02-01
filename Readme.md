@@ -246,11 +246,160 @@ We’ve now automated a huge amount of the workflow:
 | serve| gulp-connect | grunt-contrib-connect |
 | refresh-browser| gulp-livereload | grunt-contrib-watch (built in) |
 
+# Finished build file
 
-		
-		
-		
+We end up with a set of tasks that we can run. Here are the "top level" tasks, i.e., the ones that we will commonly call from the command line:
 
+| Task	| Dependencies | Description 
+| ------------- |:-------------|:-------------| 
+| default| build | Default task so that when your build tool is called with no parameters, it simply delegates to the build task. |
+| build| clean, scripts, styles, images, html | Minifies, concatenates, and compresses assets, then moves the compressed versions into the build directory. |
+| watch| live-reload, serve | Launches the local server, which serves the build directory. Watches the src directory. Any change to any file inside src will trigger the default task. This is the task you will run when you are working on your project, and it will whirr away in the background keeping everything up to date for you. |
+ 
+ # What else can build tools do for us?
+
+We’ve automated the workflow that we defined earlier, but build tools can do lots more. Here are a few examples.
+
+## Linting
+
+Linting, also known as static analysis, is the automated inspection of your source code (files in src). Think of it as having a more experienced colleague checking your work and making sure that you haven’t made any common mistakes.
+
+JavaScript can be automatically checked using a tool called jshint. This can check for common performance, security, and stylistic problems. Following the recommendations of jshint makes your code standards-compliant, and protects you from common clangers.
+
+Similarly, CSS can be linted using tools like csslint. This can help you to automatically detect whether you’ve used invalid or deprecated rules. It can also help you to make more efficient CSS that the browser can use without friction.
+
+HTML can also be linted!
+
+I generally recommend obeying every recommendation that linters make - as legendary programmer John Carmack once put it, "If you have to explain it to the computer, you’ll probably have to explain it to your colleagues."
+
+All linters can be "tuned" to your specific needs - for example, if you are breaking one rule for a good reason, then you can tell your linter to ignore it.
+
+Here are some example tools you could use:
+
+| Functionality	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| Lint css| gulp-csslint | grunt-contrib-csslint |
+| Lint javascript| gulp-jshint | grunt-contrib-jshint |
+| Verify html| gulp-htmlhint | grunt-htmlhint |
+
+## CSS preprocessing
+
+CSS is great but it’s fiddly. A preprocessor makes CSS far easier to work with. I use LESS day-to-day, but there are many others, including Sass and Stylus. All preprocessors add features like variables, mixins, and so forth, which greatly reduce the amount of code you need to write and make it far easier to maintain.
+
+Using a preprocessor, the styles task can transform styles into raw CSS. This means that you would never need to edit raw CSS; you could work entirely in the far more pleasant world of LESS (or whichever you prefer).
+
+| Functionality	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| LESS to CSS| gulp-less | grunt-contrib-less |
+
+## Script preprocessing (transpiling)
+
+Instead of plain JavaScript, you might be using something like CoffeeScript. You would need a transpiling stage, which converts from CoffeeScript into JavaScript.
+
+You might also be using a more cutting-edge version of JavaScript than is available in current web browsers. At the time of writing, ES6 is a forthcoming version of JavaScript that is not available for general usage in many web browsers. Therefore, we can use tools to transpile it into ES5.
+
+Once you have these tools in your workflow, you would have your CoffeeScript or ES6 code in src, and standard ES5 code in build. It makes debugging a little more difficult, but it can be worth it if you want to use cutting edge features.
+
+| Functionality	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| CoffeeScript transpiler| gulp-coffee | grunt-contrib-coffee |
+| ES6 transpiler| gulp-babel | grunt-babel |
+
+## Push to server
+
+Build tools can even be used for deployment. There are all sorts of options here and it is out of our scope to cover them in detail, so here are a few examples:
+
+| Functionality	| Gulp plugin | Grunt plugin 
+| ------------- |:-------------|:-------------| 
+| FTP | gulp-ftp | grunt-ftp-deploy |
+| Github pages| gulp-git-pages | grunt-gh-pages |
+| rsync | gulp-rsync | grunt-rsync |
+
+# Best practice
+
+Generally, you can use a build tool for any automation task. As with any software, build tools are open to misuse, however, so here are some guidelines to help you to make sure you are using the build tool as it was intended.
+
+## Never edit anything in the build directory
+
+You should never manually edit anything in the build directory. Similarly, your build tool should never modify anything in the src directory.
+
+If there is anything that you have to do in the build directory, you can almost certainly find a way to get the tool to do it for you.
+
+## Never let your build tool modify anything in the src directory
+
+Conversely, if your build tool modifies your src directory, you are going to have a bad time. Such behaviour breaks the "pipeline" approach and can create circular actions that never fully resolve. Therefore, you need to be confident that your build tool will stay out of the src directory entirely.
+
+Think of it like this: src is yours, build belongs to your build tool.
+
+## Short, sharp, composable tasks
+
+Whilst you CAN create tasks that are huge and have a large amount of code, it is usually better to separate these into smaller tasks and compose them using task dependencies.
+
+## Your normal workflow should be encapsulated by a single task
+
+You shouldn’t need to be constantly running a bunch of separate tasks. Instead, one task should rely upon or kick off the subtasks that it needs. Generally, you should use some kind of watch and run it in the background. As you do your normal work, it will detect changes, and then run everything it needs to.
+
+If you’re finding yourself constantly having to stop your watch task and run things, then consider putting them into your main (default) task.
+
+## Have tasks that aren’t part of your main workflow as separate tasks
+
+Conversely, for tasks that aren’t part of your regular workflow, don’t have the main workflow call them.
+
+For example, you don’t want to deploy every tiny little tinker you make in your local workspace. Therefore, you might have a task like deploy that you only call once you’ve done all of your testing and you’re confident that it’s time to go live.
+
+## Don’t store credentials in plain text
+
+Speaking of deployments, it might be tempting to store things like passwords or authentication tokens in your build file. This is generally a bad move from a security perspective - if someone accesses your build file, they could compromise your live systems.
+
+A full treatment of security issues is outside of the scope of this book, but suffice to say, don’t store credentials in plain text and certainly don’t keep them directly in your build file.
+
+## Debugging with source maps
+
+If you have "compiled" (minified, concatenated) JavaScript code in build, it will look different to your code in src. It will have had whitespace removed, variable names shortened - all sorts of changes that make it hard to debug. You can use a source map to help you here. A source map holds information about your original source files. Browsers like Chrome and Firefox support source maps, and enable you to debug as if you were using your original code. This is really handy as it means you are testing the same code the user would receive, but debugging it in its original form.
+
+Similarly, with a CSS preprocessor like LESS or SaSS, the CSS in build is different to the CSS in src. LESS and SaSS support source maps as well, so you can use the same approach.
+
+## Being idiomatic
+
+Try to ensure that your project is idiomatic. By that, I mean that you should follow the conventions that other people use for similar projects. This has the following benefits:
+
+* Easier to apply code snippets you find online
+* Easier to explain to people than some bespoke system
+* The wheel remains un-reinvented!
+
+There are a couple of ways you could go about this. Firstly, you could clone an existing repository and modify it to suit your needs. Feel free to clone the sample source code for this book from https://github.com/gavD/5ss-build-tools.
+
+The second option is to use a scaffolding tool. These are tools that create a "skeleton" project for your app that has the tools you will need installed and ready to use. So, you don’t have to create the build and src directories, and you don’t have to create your build file - your scaffolding tool does it all for you. Handy!
+
+If you’re starting with a brand-new app, Yeoman is a great scaffolding tool that uses generators to get you up and running with a project structure. It supports a huge range of project types. For example, are you building an AngularJS app? Then use the yeoman angular generator! Working on a PhoneGap project? Then use the yeoman phonegap generator! No matter what you are building, there is likely to be a Yeoman generator that can help you to get started.
+
+## See also: Browserify
+
+Check out Browserify. It’s not a build tool as such, but it offers a nice minimalist approach to the JavaScript asset pipeline.
+
+# Go forth and build!
+
+In this book, we started out by looking at common web development workflows. We then went on to look at how we can improve upon that workflow. We then took a detailed look at what a build tool is, what a build file is, and what tasks are. We then went through creating some tasks to automate the workflow.
+
+Thanks for reading, I hope that this book has been a useful introduction to the wonderful world of build tools!
+
+# Further reading
+
+* James Cryer’s Pro Grunt.js
+* Travis Maynard’s Getting Started with Gulp
+
+# Thanks
+
+Many thanks to the following proof readers for valuable insights and corrections:
+* Nate Abele
+* Andrew Canham
+* Kathryn Davies
+* Aryella Lacerda
+* John Mercer
+
+# Download as PDF
+
+[Download as PDF](http://radify.io/downloads/Using-Build-Tools.pdf)
 
 
 
