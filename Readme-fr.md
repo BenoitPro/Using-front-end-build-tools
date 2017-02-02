@@ -11,37 +11,35 @@ Ce livre s'adresse aux intégrateurs qui font également du développement front
 
 Depuis les années 2000, le développement web est devenu plus sophistiqué. Cela a mené à plus de complexité, et nous sommes plusieurs à trouver qu'on doit désormais travaillé avec beaucoup de concepts. Cela peut être un peu intimidant (J'ai souvent souhaité moi même que le rythme du progrès ralentisse !).
 
-Since the turn of the century, web development has become far more sophisticated. This has led to more complexity, and many of us are finding we have to work with many new things. This can seem a little intimidating (I have certainly found myself wishing that the pace of progress would slow down!).
+Pour prendre l'avantage de cette sophistication tout en réduisant sa complexité, les développeurs front-end utilisent des outils. Ces derniers nous permettent de travailler à un plus haut niveau et d'automatiser les tâches répétitives, ainsi qu'économiser du temps et produire des résultats plus sophistiqué. L'automatisation rationnalise nos processus, nous permettant d'être focalisé sur l'aspect créatif de notre travail plutôt que de passer des heures empêtré dans les tâches pénible.
 
-To take advantage of this sophistication whilst reducing its complexity, front-end developers use build tools. These tools allow us to work at a higher level and automate away repetitive tasks, thereby saving time and producing more sophisticated results. Automation streamlines our processes so that we can focus on creative work, rather than spending hours lost in the weeds of tedious tasks.
+Dans ce petit livre, nous verrons certains outils de construction (*build tools*), ce qu'ils peuvent faire pour vous, et comment commencer à les utiliser. J'utiliserai des outils spécifique, mais ce livre expliquera les concepts généraux et non leur particularité. Après tout, chaque outils de construction est bien documenté en ligne et au format papier. A la place, ce livre à pour but premier de définir ce que sont les outils de construction et comment assembler des flux de travail *workflows* efficace avec eux.
 
-In this short book, we will go through some of the build tools that are available, what they can do for you, and how you can get started with them. I will refer to some specific tools, but this book will not teach you the specifics of a particular build tool; after all, each build tool is well documented online and in print already. Instead, this book functions as a primer on what build tools are and how to assemble powerful, efficient build workflows with them.
+Le but de ce livre est qu'une fois l'avoir lu, vous puissiez amériorer vos workflows en incorporant les outils de construction. J'ai pour but de vous donner la confiance et les connaissances nécessaire pour plonger dans le puissant et flexible monde de ces outils, de devenir plus productif et au final de prendre plaisir dans votre travail.
 
-The goal of this book is that, once you have read it, you will be able to improve your workflow by incorporating build tools. I aim to give you the confidence and knowledge needed to dive into this world of powerful and flexible utilities, become more productive, and enjoy your work more as a result.
+# Parlons des workflows
 
-# Let’s talk about workflow
+Un Workflow est une liste de tâches effectuer les unes après les autres. Chacun a un workflow différent, et vous pouvez avoir plusieurs workflows pour différents aspect de votre rôle. Nous allons étudier le workflow du développement web (front) et comment l'optimiser.
 
-Workflow is the set of tasks that one goes through when doing a job. Everyone’s workflow is different, and you might have multiple workflows for different aspects of your role. We will look at web development workflow and how to optimise it.
+## Workflow basique en developpement web
 
-## Basic web development workflow
-
-In developing websites and applications, you probably have phases that look something like this:
+Dans le développement de sites web (webfront) et d'applications (webapp), vous avez probablement les phases suivantes :
 
 ![alt text](img/workflow-basic.png?raw=true "Schema 1")
 
-> Don’t worry if your workflow is different. I’ve just selected a number of common tasks; the principles found in book will apply no matter what your workflow is.
+> Ne vous inquiétez pas si votre workflow est différent. J'ai juste sélectionné les tâches communes. Les principes de ce livre s'appliqueront peu importe votre workflow exacte.
 
-There are a number of problems with this common, simplistic workflow:
+Il y a un certains problèmes avec ce workflow simpliste.
 
-* File size - there is no minification of the assets or compression of the images, so the application will perform slower than it ought.
-* Consistency - pushing to a server can be error prone: assets may be cached, transfers can fail, etc.
-* Speed of workflow - pushing and refreshing manually is time consuming and takes you out of the "zone" of your workflow.
+* La taille des fichiers - Il n'y a pas de minification des fichiers sources (*assets*), l'application s'exécutera sera plus lentement qu'elle devrait.
+* Consistence - Pousser sur un serveur peut être sujet à erreurs, les fichiers sources peuvent avoir été mis en cache, le transfert peut planter etc.
+* Rapidité du workflow - Pousser et rafraichir manuellement les fichiers prend du temps et vous fait sortir du workflow.
 
-Let’s add a few more tasks to this workflow to address these issues.
+Rajoutons quelques tâches supplémentaires à ce workflow pour corriger ces problèmes.
 
-# Creating an asset pipeline
+# Créons un processus de transformations des fichiers sources *asset pipeline*
 
-To resolve the problems we have identified in the basic workflow, we can incorporate compression, minification, and concatenation. Minification compresses code without changing its functionality. Concatenation combines multiple files together into a single file, improving download speeds. Let’s add these tasks to the process:
+Pour résourdre les problèmes identifié dans le workflow basique, nous pouvons incorporer la compression, la minification, et la concatenation. La minification diminu la taille du code en reduisant notamment les noms des variables et des fonctions. La compression diminue la taille des fihciers au niveau binaire. La concatisation combine de multiple fichiers en un seul, reduisant le nombre de requête http nécessaire ce qui améliore la vitesse de téléchargement. Rajoutons ces tâches dans le processus :
 
 ![alt text](img/workflow-asset-pipeline.png?raw=true "Schema 1")
 
