@@ -37,30 +37,31 @@ Il y a un certains problèmes avec ce workflow simpliste.
 
 Rajoutons quelques tâches supplémentaires à ce workflow pour corriger ces problèmes.
 
-# Créons un processus de transformations des fichiers sources *asset pipeline*
+# Créons un processus de transformations des fichiers sources (*asset pipeline*)
 
 Pour résourdre les problèmes identifié dans le workflow basique, nous pouvons incorporer la compression, la minification, et la concatenation. La minification diminu la taille du code en reduisant notamment les noms des variables et des fonctions. La compression diminue la taille des fihciers au niveau binaire. La concatisation combine de multiple fichiers en un seul, reduisant le nombre de requête http nécessaire ce qui améliore la vitesse de téléchargement. Rajoutons ces tâches dans le processus :
 
 ![alt text](img/workflow-asset-pipeline.png?raw=true "Schema 1")
 
-This approach, commonly known as the asset pipeline, takes assets from an input area, transforms them, and delivers them to an output area. We will look at how to structure and automate an asset pipeline.
+Cette approche, communément appelée "asset pipeline" (je prend toutes idées de traduction simple en français autre que "processus de transformations des fichiers sources" 😜), prend les fichiers sources depuis un chemin d'entré, les transforment et les délivrent en sorti dans un dossier de detination. Nous verrons comment structurer et automatiser cela.
 
-A common convention is to have two separate directories in the root (top level) of your project. The first is src, which contains source code - the files you edit. The second is build, which contains files that are generated and delivered to the end user. You never edit anything in build directly. The project’s specific location is not important, but this book assumes that the project is saved in /home/user/myproject on OSX/Linux or C:\Users\user\myproject on Windows.
+Une convention commune consiste à séparer les dossiers racines de votre projet. Le premier est nommé *src*, qui contient le code source - les fichiers que vous éditez. Le second est nommé *build*, qui contient les fichiers généré et délivré à l'utilisateur final. Vous n'éditez jamais rien directement dans le dossier *build*. La localisation exacte n'est pas importante mais ce livre part du principe que le projet est sauvegardé dans /home/user/myproject sur OSX/Linux ou C:\Users\user\myproject sur Windows.
 
-> In some projects, build may be called dist, which is short for "distribution".
+> Dans certains projets *build* peut-être appelé *dist*, le raccourci de "distribution".
 
-| Directory	OSX/Linux	| Windows
+| Dossier	OSX/Linux	| Windows
 | ------------- |:-------------|
-| Source	/home/user/myproject/src | C:\Users\user\myproject\src |
+| Sources	/home/user/myproject/src | C:\Users\user\myproject\src |
 | Build	/home/user/myproject/build | C:\Users\user\myproject\build |
 
-Once build and src are separated, move any existing project files into the src directory. These are the files that you will edit. Everything in build will be generated using your build tool - we never edit files in build directly. Hands off!
+Lorsque *build* et *src* sont séparés, déplacer tous les fichiers dans le dossier *src*. Ils contiendra les fichiers que vous allez éditer. Tout ce qui sera dans le dossier build seront généré par votre outils de construction - Nous n'éditons jamais les fichiers du dossier build directement. Pas touche !
 
-> It’s best to test something that’s as representative as possible of what the end-user will receive. Therefore, it’s a good practice to test in build, not in src, so as to catch any potential problems that the transformations might have introduced.
+> C'est mieux de tester ce qui se rapproche le plus possible de ce que l'utilisateur recevra. Par conséquent, c'est une bonne pratique de tester le projet depuis le dossier *build*, et non pas dans *src*, cela permet d'intercepter tout problèmes que la transformation peut avoir introduit.
 
-A full treatment of SCM (Software Configuration Management) is outside the scope of this book, but I will make one suggestion: when using a version control tool like Git, Mercurial, or Subversion, add the build directory to your SCM’s ignore file. You do not want to commit anything in build - it’s considered volatile. In SCM, only the source files are committed to your SCM, and these generate the build. This keeps commit logs clean and uncluttered by the build assets.
+Traiter des logiciels de gestion de version ne fait pas parti de ce livre, mais je vais faire une suggestion : Lorsqu'on utilise un outil tel que Git, Mercurial, ou Subversion, ignorez le dossier *build* des fichiers versionné. Vous ne voulez pas commiter le moindre fichier du dossier *build* - Il est a considérer comme volatile. Commitez uniquement les fichiers sources. Cela permet de garder les logs de commit  propres et épurées.
 
-> To learn about Git, check out [Version Control with Git by Ryan Taylor](http://www.fivesimplesteps.com/products/version-control-with-git)
+
+> Pour en apprendre plus sur Git, je vous conseille [Version Control with Git by Ryan Taylor](http://www.fivesimplesteps.com/products/version-control-with-git)
 
 Here is how the asset pipeline might look:
 
