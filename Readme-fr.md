@@ -1,13 +1,15 @@
 Author : Gavin Davies
-> This e-book was originally published in 2015 by Five Simple Steps. Five Simple Steps have closed their online store and graciously returned the rights to the authors, so we are offering this book for free.
+> Ce livre a d'abord été publié en 2015 par Five Simple Steps. Five Simple Steps ont fermés leur boutique en ligne and ont gracieusement retourné les droits aux auteurs. Nous offrons donc ce livre gratuitement.
 
-> See the original Article on [Radify.io blog post "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
+> Regardez l'article original sur [le blog de Radify.io "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
 
-> It has been put on Github for translate and improvement purpose, feel free to pull request or discuss any mistake.
+> Il est publié sur Github dans le but de permettre sa traduction et son amélioration. Libre à vous de soumettre vos Pull Request ou de discuter des erreurs présentes.
 
 # Introduction
 
-This book is aimed at designers who also do front end development. These days, it seems that we all wear multiple hats in our jobs!
+Ce livre s'adresse aux intégrateurs qui font également du développement front end. De nos jours, il semble que nous portons tous plusieurs casquettes dans notre travail !
+
+Depuis les années 2000, le développement web est devenu plus sophistiqué. Cela a mené à plus de complexité, et nous sommes plusieurs à trouver qu'on doit désormais travaillé avec beaucoup de concepts. Cela peut être un peu intimidant (J'ai souvent souhaité moi même que le rythme du progrès ralentisse !).
 
 Since the turn of the century, web development has become far more sophisticated. This has led to more complexity, and many of us are finding we have to work with many new things. This can seem a little intimidating (I have certainly found myself wishing that the pace of progress would slow down!).
 
