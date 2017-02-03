@@ -1,3 +1,5 @@
+[comment]: <> (TODO : Schema title a definir ds les images)
+
 Author : Gavin Davies
 > Ce livre a d'abord été publié en 2015 par Five Simple Steps. Five Simple Steps ont fermés leur boutique en ligne and ont gracieusement retourné les droits aux auteurs. Nous offrons donc ce livre gratuitement.
 
@@ -63,15 +65,15 @@ Traiter des logiciels de gestion de version ne fait pas parti de ce livre, mais 
 
 > Pour en apprendre plus sur Git, je vous conseille [Version Control with Git by Ryan Taylor](http://www.fivesimplesteps.com/products/version-control-with-git)
 
-Here is how the asset pipeline might look:
+Voici comment va ressembler le workflow des fichiers sources :
 
 ![alt text](img/workflow-asset-pipeline-build-level.png?raw=true "Schema 1")
 
-Assuming that you have two javascript files, src/js/a.js and src/js/b.js, and two CSS files, src/css/first.css and src/css/second.css, the build would output build/js/all.min.js and build/css/all.min.css:
+Partant du principe que vous avez deux fichiers javascript, src/js/a.js et src/js/b.js, et deux fichiers CSS, src/css/first.css et src/css/second.css, la transformation sortira les fichiers build/js/all.min.js et build/css/all.min.css:
 
 ![alt text](img/workflow-asset-pipeline-build-level-detail.png?raw=true "Schema 1")
 
-Because we have concatenated multiple assets into single files, we will have to replace the references to the assets. In src/index.html, we have four such references:
+Parce qu'on a concaténé de multiple fihciers sources dans un seul fichier, nous devons remplacer les références qui s'y référait dans l'html. Dans le fichier HTML src/index.html, nous avions 4 références :
 
 ```html
 <head>
@@ -82,7 +84,7 @@ Because we have concatenated multiple assets into single files, we will have to 
 </head>
 ```
 
-In build/index.html, this becomes just two references:
+Toujours dans build/index.html, nous devons avoir désormais deux références:
 
 
 ```html
@@ -92,29 +94,29 @@ In build/index.html, this becomes just two references:
 </head>
 ```
 
-At this point, the minified and concatenated assets, bundled up cleanly in the build directory, are ready to be pushed to the server. There are some problems, though:
+A cette étape, la version minifié et concaténé des fichiers sont packagé proprement dans le dossier *build*, qui est prêt à être publié sur le serveur. Mais il reste quelques problèmes :
 
-* Isn’t this process unnecessarily complex?
-* How do we know if there are problems with the code?
-* How do we manage this process?
+* Est-ce que ce processus n'est pas inutilement complexe ?
+* Comment pouvons-nous savoir s'il y a eu des problèmes dans le code ?
+* Comment gérer ce processus ?
 
- Here is where we introduce the wonderful world of build tools!
+Introduisons maintenant le monde merveilleux des outils de construction !
 
-# Automated workflows with build tools
+# Workflows automatisé avec les outils de construction
 
-A build tool is software that automates the transformation of source code into a deliverable. Any time a change is made to the source code, the build tool should be run - usually from the command line. The build tool is how we implement asset pipelines:
+Les logiciels de construction *build tool* automatisent la transformation du code source dans un délivrable. A chaque fois qu'un changement est réalisé dans le code source, l'outil de construction doit se lancer - habituellement depuis le terminal en ligne de commande. L'outil de construction définit comment nous implémentons le workflow suivant :
 
 ![alt text](img/automated-workflows-asset-pipeline-with-tool.png?raw=true "Schema 1")
 
-## Available build tools
+## Outils de construction disponibles
 
-There are many build tools available. This book focuses on the web and therefore looks at those tailored to HTML, CSS, and JavaScript. Grunt and Gulp, the two most popular, will be our focus because of their widespread adoption. There are many others, such as Broccoli, Middleman and Brunch, but this book’s principles apply to all build tools.
+Il y a plusieurs outils de construction disponibles. Ce livre ce focalise sur le web front et par conséquent sur ceux dédiés à l'HTML, les CSS et le Javascript. Nous nous focaliserons sur Grunt et Gulp, car ce sont les deux les plus populaire. Il y en a beaucoup d'autres, comme Brocoli, Middleman, et Brunch, mais les principes de ce livre s'appliquent à tous les outils de construction.
 
-> If your needs are simple, the package manager NPM can be used as a build tool - NPM along with Browserify can be quite a powerful combination. See http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/ for details.
+> Si vos besoins sont simple, le gestionnaire de packages NPM peut être utilisé comme outil de construction  - NPM avec Broserify peut être une combinaison puissante . Voir http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/ pour plus de précisions.
 
-## The build file
+## Le fichier de construction
 
-The build file tells the build tool what to do. It defines a set of tasks that the build tool can perform. In Grunt, this file is called Gruntfile.js. In Gulp, it is called Gulpfile.js. As a rule, the build file goes at the root of the project, above the build and src directories.
+Le fichier de construction *build file* dit à l'outil de construction ce qu'il doit faire. Il définit une liste de tâches que l'outil de construction doit réaliser. Dans Grunt, ce fihcier est appelé Gruntfile.js. Dans Gulp, il est appelé Gulpfile.js. Nous suivrons la règle consistant à mettre ce fichier à la racine du projet, au dessus des dossiers *src* et *build*.
 
 | Item	| OSX/Linux | Windows
 | ------------- |:-------------|:-------------|
@@ -123,45 +125,50 @@ The build file tells the build tool what to do. It defines a set of tasks that t
 | Build file (Gulp)	| /home/user/myproject/Gulpfile.js | C:\Users\user\myproject\Gulpfile.js |
 | Build file (Grunt) | /home/user/myproject/Gruntfile.js | C:\Users\user\myproject\Gruntfile.js |
 
-## Tasks
-Build tools run tasks. A task is simply an action or a set of actions that can be performed. For example, a task could be "copy files from src to build".
+## Tâches
+L'outil de construction lance les tâches. Une tâche est simplement une action ou une liste d'action qui peuvent être réalisées. Par exemple, une tâche peut être "copy les fichiers du dossier *src* dans le dossier *build*".
 
-In most build tools, tasks are composable, meaning that a task can depend on or delegate to other tasks. For example, task copy-assets could depend on task clean, so that whenever copy-assets is run, clean is automatically run beforehand. The advantage of composability is that the code for the clean task won’t be repeated every time you need to call it.
+Dans la plupart des outils de construction, les tâches sont composables, ce qui signifie qu'elles peuvent dépendre ou être déléguer à d'autres tâches. Par exemple la tâche copy-assets qui copie les fichiers sources peut être dépendante de la tâches clean qui en amont supprimera les fichiers déjà présent. L'avantage de la composabilité est que le code dans la tâche de suppression des fichiers *clean* n'a pas à être répétée à chaque fois qu'on à besoin de l'appeler.
 
-Tasks are stored inside the build file; here is an example of a build file that contains some tasks:
+Les tâches sont stockés dans le fichier de construction, voici un exemple de fichier de construction contenant certaines tâches :
 
 ![alt text](img/automated-workflows-build-file.png?raw=true "Schema 1")
 
-### Anatomy of a task
+### Anatomie d'une tâche
 
-A task generally has these attributes:
+Une tâche à généralement ces attributs :
 
-#### Name
-The name of the task. Most tasks can be run in isolation by passing the task’s name to the tool on the command line. For example, grunt clean or gulp clean would run the clean task.
+#### Nom
+Le nom de la tâche. La plupart des tâches peuvent être lancée séparemment depuis l'outil de ligne de commande. Par exemple, grunt ou gulp clean lance la tâche de suppression des fichiers.
+
 #### Description
-Some build tools supply an optional task description, an explanation of the task that doubles as documentation for people on your team.
-#### Dependencies
-A list of tasks that must be run before a certain task can run. For example, the build task may have clean as a dependency, meaning that if you call the build task, the clean task automatically runs first.
-#### Functionality
-This is the specific code or configuration that you write to implement your task. For example, the scripts task could minify and concatenate a set of files from src and then copy them into build/js.
+Certains outils de construction permettent l'ajout d'une description de la tâche. Permettant de documenter la tâche auprès de votre équipe.
 
-# Creating your first build file
+#### Dépendances
 
-We will create a build file that automates the workflow that we have defined. I’m not going to write the actual code here, as it will differ based for each build tool, but I will represent it in an abstract manner.
+La liste des tâches qui doivent être lancées avant la tâche en question. Par exemple la tâche de construction *build* peut avoir la tâche de suppression *clean* des fichiers du dossier build en dépendance, signifiant que l'outil de build devra d'abord supprimer les fichiers avant de les régénérer.
 
-These tasks will:
+#### Fonctionnalité
 
-* Clean the build directory
-* Compress and minify assets
-* Copy the transformed results into the build directory
+Contient le code spécifique à la tâche. Par exemple, la minification ou la concatenation.
 
-Here is the order in which the tasks will run:
+# Création de votre premier fichier de construction
+
+Nous allons créer un fichier de construction qui automatise le workflow que nous avons défini. Je ne vais pas écrire le code ici, puisqu'il diffère d'un outil à l'autre, mais je vais le représenter d'une manière abstraite.
+
+Ces tâches seront :
+
+* Supprimer le dossier build
+* Compresser et minifier les fichiers sources
+* Copier les résultats transformés dans le dossier *build*
+
+Voici l'ordre d'exécution de ces tâches :
 
 ![alt text](img/your-first-build-file-task-order.png?raw=true "Schema 1")
 
-> Some build tools can run tasks in parallel; others will run them one at a time in sequence. In the diagram above, we have assumed that we can run scripts, styles, images and html in parallel.
+> Cerains outils de construction peuvent executer des tâches en parallèles; d'autres non et les executent les unes à la suite des autres. Dans le diagramme ci-dessus, nous partons du principe qu'on peut executer les tâches scripts, styles, images et html en parallèle.
 
-## Explanation
+## Explication
 
 ### Task clean - cleans out build directory
 
