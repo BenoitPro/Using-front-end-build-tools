@@ -1,7 +1,6 @@
-[comment]: <> (TODO : Schema title a definir ds les images)
 
-Author : Gavin Davies
-> Ce livre a d'abord été publié en 2015 par Five Simple Steps. Five Simple Steps ont fermés leur boutique en ligne and ont gracieusement retourné les droits aux auteurs. Nous offrons donc ce livre gratuitement.
+Author : [Gavin Davies](https://github.com/gavD)
+> Ce livre a d'abord été publié en 2015 par Five Simple Steps. Five Simple Steps ont fermé leur boutique en ligne et ont gracieusement retourné les droits aux auteurs. Nous offrons donc ce livre gratuitement.
 
 > Regardez l'article original sur [le blog de Radify.io "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
 
@@ -166,46 +165,44 @@ Voici l'ordre d'exécution de ces tâches :
 
 ![alt text](img/your-first-build-file-task-order.png?raw=true "Schema 1")
 
-> Cerains outils de construction peuvent executer des tâches en parallèles; d'autres non et les executent les unes à la suite des autres. Dans le diagramme ci-dessus, nous partons du principe qu'on peut executer les tâches scripts, styles, images et html en parallèle.
+> Certains outils de construction peuvent exécuter des tâches en parallèles; d'autres non et les executent les unes à la suite des autres. Dans le diagramme ci-dessus, nous partons du principe qu'on peut exécuter les tâches scripts, styles, images et html en parallèle.
 
 ## Explication
 
-### Task clean - cleans out build directory
+### Tâche clean - Supprime le contenu du dossier *build*
 
-This simple task cleans out the build directory by deleting everything in it.
+Cette tâche simple supprime le contenu du dossier *build*.
 
-### Task build - calls the subtasks
+### Tâche build - Appele les sous tâches
 
-Depends on task clean via the dependency mechanism discussed earlier, so when build is called, it first triggers clean. After clean completes, the build task delegates to the scripts, styles, images and html tasks.
+Elle dépendant de la tâche clean par le mécanisme décrit plus tôt, donc lorsque build est appelé, la tâche clean est exécuté d'abord. Après cela, la tâche build délègue aux tâches scripts, styles, images et html.
 
-### Task scripts - transforms javascript
+### Tâche scripts - Transforme les fichiers javascript
 
-Takes src/js/a.js and src/js/b.js, minifies them, then concatenates them into build/js/all.min.js.
+Prend src/js/a.js et src/js/b.js, les minifie, puis les concatène dans build/js/all.min.js.
 
-### Task styles - transforms CSS
+### Tâche style - Transforme les fichiers CSS
 
-Takes src/css/first.css and src/css/second.css, minifies them, then concatenates them into build/css/all.min.css. For designers writing in Sass or LESS, styles will also compile those files into CSS before minification and concatenation.
+Prend src/css/first.css et src/css/second.css, les minifie, puis les concatène dans build/css/all.min.css. Pour les développeurs écrivant en SASS ou LESS, les styles seront également compilés en CSS avant la minification et la concaténation.
 
-### Task images - compresses images
+### Tâche images  - Compresse les fichiers images
 
-Takes the images in src/img, compresses them, and outputs them to build/img.
+Prend les fichiers images de src/img, les compresse, puis les met dans le dossier  build/img.
 
-### Task html - transforms HTML
+### Tâche html - Transforme les fichiers HTML
 
-Takes src/index.html and minifies it. It then modifies the HTML, directing the asset paths to build, not src. The output is then directed to build/index.html.
-
-Once the build task completes, you have your complete website, ready for use in the build directory.
+Prend src/index.html et le minifie. Puis modifie l'HTML pour changer le chemin vers le dossier *build* et non pas *src*. Enfin elle met le résultat dans le dossier build.
 
 ## Plugins
 
-For each task, there is an installable plugin for your build tool. This is great because it means you usually have to write very little code.
+Pour chaque tâche, il y a un plugin installable dans votre outil de construction. C'est génial parce que cela signifie que vous aurez peu de code à écrire vous même.
 
-The Gulp team maintains a list of verified plugins and their community ensures that there is only one plugin for each task. In contrast, the Grunt community often offers a number of alternatives for each plugin. The grunt-contrib-* plugins are the best starting point because they are officially maintained.
+L'équipe Gulp maintient une liste de plugins vérifiés et leur communauté s'assure qu'il y a une seul plugin par tâche. Ce qui contraste avec la communauté Grunt qui permet de multiple alternatives pour chaque plugin. Les plugins nommés grunt-contrib-* sont le meilleur point de départ parce qu'ils sont maintenuent officiellement.
 
-> The specifics of how to install and use these plugins are beyond the scope of this book.
+> L'installation et l'usage spécifique de ces plugins dépasse le cadre de ce livre.
 
 
-| Task	| Gulp plugin | Grunt plugin
+| Tâche	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
 | clean| del | grunt-contrib-clean |
 | scripts| gulp-uglify | grunt-contrib-uglify |
@@ -213,47 +210,47 @@ The Gulp team maintains a list of verified plugins and their community ensures t
 | images| gulp-imagemin | grunt-contrib-imagemin |
 | html| gulp-minify-html | grunt-contrib-htmlmin |
 
-Look over the sample project for this book at https://github.com/gavD/5ss-build-tools. There, you will find example build files for Grunt and Gulp that follow this approach.
+Regardez l'exemple de projet de ce livre à l'adresse https://github.com/gavD/5ss-build-tools. Vous y trouverez des exemples de fichiers de construction pour Grunt et Gulp qui suivent cette approche.
 
-# Automating your workflow
+# Automatiser votre workflow
 
-At this point, the areas in green are automated:
+A cette étape, la zone verte a été automatisée :
 
 ![alt text](img/automating-your-workflow-1.png?raw=true "Schema 1")
 
-Design and editing source code in src isn’t automatable - if it were, robots would be doing our jobs. Therefore, we will omit these workflow stages from the future diagrams. The rest of these tasks, however, we can use build tools for.
+Les étapes de design et d'édition du code source ne sont pas automatisable - si c'était le cas, les robots feraient notre travail. Par conséquent nous les ommettrons dans nos futurs diagrammes. Cependant, pour le reste des tâches, nous pouvons utiliser les outils de construction.
 
-## Task watch - automating your automation
+## Tâche watch - Automatiser votre automatisation
 
-Right now, you are probably running the tool on the command line every time you make a change. This is pretty laborious, and also error prone - chances are you will make a change, forget to run the tool, reload the browser, and be confused as to why your changes aren’t showing up… I know I’ve certainly done that!
+Désormais, vous lancez probablement l'outil de construction à chaque fois que vous réalisez un changement. C'est plutôt pénible, et enclin aux erreurs - Il est probable que vous allez oublier de lancer l'outil ou de relancer le navigateur et d'être embrouillé à vous demander pourquoi les changements n'apparaissent pas... Je sais, j'ai déjà fait ça!
 
-Thankfully, we can automate this. We will create a new task, watch, which will monitor the src directory, and whenever anything changes in there, it automatically runs the default task, which has the build task as a dependency:
+Heureusement, nous pouvons automatiser cela. Nous allons créer une nouvelle tâche, watch, dans laquelle nous surveillerons le dossier *src*, et s'il y a un changement à l'intérieur, elle lancera automatique la tâche *default*, qui a pour dépendance la tâche *build* :
 
 ![alt text](img/automating-your-workflow-2.png?raw=true "Schema 1")
 
-Now, the build tool runs automatically when anything changes in src, so that any time you update your source code, the website is regenerated automatically. This automates the build:
+Maintenant, l'outil de construction se lance automatiquement lorsqu'un changement est effectué dans *src*, donc à chaque fois que vous mettez à jour votre code source, le site web est regénéré automatiquement. Cela automatise la construction :
 
 ![alt text](img/automating-your-workflow-3.png?raw=true "Schema 1")
 
-## Task serve - run a local server
+## Tâche serve - Lance un serveur local
 
-Instead of constantly pushing code up to a web server, build tools allow you to run a server locally, which serves the build directory, so you’re seeing the compressed, minified, concatenated versions of files, just like your users will. This means that we can remove the "Push to server" stage of the workflow entirely:
+Au lieu de pousser le code vers un serveur, les outils de construction vous permettent de lancer un serveur localement, lequel servira le dossier *build*, donc vous verrez les versions compressés, minifiés et concaténés des fichiers, tout comme vos futurs utilisateurs. Cela signifie que nous pouvons supprimer l'étape de "Push to server" du workflow entièrement :
 
 ![alt text](img/automating-your-workflow-4.png?raw=true "Schema 1")
 
-> Don’t worry if you were hoping to cover deployment in your build workflow; we will talk about deployment later.
+> Ne vous inquiétez pas si vous espériez qu'on convrira le déploiement dans notre workflow de construction, nous parlerons du déploiement plus tard.
 
-## Task refresh-browser: refresh your browser
+## Tâche refresh-browser: Rafrachit le navigateur
 
-One task that we spend a lot of time doing is making changes, then going over to a browser and reloading the page. A LiveReload will ensure that when a build occurs in response to a change to src, not only is the build task called, but also the browser is automatically reloaded:
+La tâche qui nous prend beaucoup de temps est de rafraichir le navigateur après un changement. Le LiveReload va s'assurer que lorsqu'un *build* arrive en réponse à un changement dans le dossier *src*, le navigateur est également automatiquement rafraichi :
 
 ![alt text](img/automating-your-workflow-5.png?raw=true "Schema 1")
 
-We’ve now automated a huge amount of the workflow:
+Nous avons automatisé une énorme quantité de travail du workflow :
 
 ![alt text](img/automating-your-workflow-6.png?raw=true "Schema 1")
 
-## What do we use to write these tasks?
+## Qu'est qu'on utilise pour écrire ces tâches ?
 
 | Task	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
@@ -261,17 +258,17 @@ We’ve now automated a huge amount of the workflow:
 | serve| gulp-connect | grunt-contrib-connect |
 | refresh-browser| gulp-livereload | grunt-contrib-watch (built in) |
 
-# Finished build file
+# Terminé le fichier de construction
 
-We end up with a set of tasks that we can run. Here are the "top level" tasks, i.e., the ones that we will commonly call from the command line:
+Nous terminons avec une liste de tâches que nous pouvons lancer. Ici sont les tâches de "haut niveau", c'est à dire, celles qui sont habituellement appelées depuis la ligne de commande :
 
-| Task	| Dependencies | Description
-| ------------- |:-------------|:-------------|
-| default| build | Default task so that when your build tool is called with no parameters, it simply delegates to the build task. |
-| build| clean, scripts, styles, images, html | Minifies, concatenates, and compresses assets, then moves the compressed versions into the build directory. |
-| watch| live-reload, serve | Launches the local server, which serves the build directory. Watches the src directory. Any change to any file inside src will trigger the default task. This is the task you will run when you are working on your project, and it will whirr away in the background keeping everything up to date for you. |
+| Tâche	        |   Dépendances     |   Description |
+| ------------- |:-------------     |:------------- |
+| default| build | Tâche par défaut que votre outil de construction appel lorsqu'il ne recois pas de paramètre. Dans notre cas elle délègue tout simplement à la tâche build. |
+| build| clean, scripts, styles, images, html | Minifie, concatène, compresse les fichiers sources, puis les déplace dans le dossier *build*. |
+| watch| live-reload, serve | C'est la tâche que vous lancez lorsque vous travaillez sur un projet, elle s'exécute en tâche de fond surveillant chaque changement, puis reconstruit le projet dans le dossier build, actualise le serveur et rafrachit le navigateur pour vous. |
 
- # What else can build tools do for us?
+# What else can build tools do for us?
 
 We’ve automated the workflow that we defined earlier, but build tools can do lots more. Here are a few examples.
 

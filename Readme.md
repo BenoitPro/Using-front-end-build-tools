@@ -263,7 +263,7 @@ We end up with a set of tasks that we can run. Here are the "top level" tasks, i
 | build| clean, scripts, styles, images, html | Minifies, concatenates, and compresses assets, then moves the compressed versions into the build directory. |
 | watch| live-reload, serve | Launches the local server, which serves the build directory. Watches the src directory. Any change to any file inside src will trigger the default task. This is the task you will run when you are working on your project, and it will whirr away in the background keeping everything up to date for you. |
 
- # What else can build tools do for us?
+# What else can build tools do for us?
 
 We’ve automated the workflow that we defined earlier, but build tools can do lots more. Here are a few examples.
 
