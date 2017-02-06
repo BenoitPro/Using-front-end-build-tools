@@ -72,7 +72,7 @@ Partant du principe que vous avez deux fichiers javascript, src/js/a.js et src/j
 
 ![alt text](img/workflow-asset-pipeline-build-level-detail.png?raw=true "Schema 1")
 
-Parce qu'on a concaténé de multiple fihciers sources dans un seul fichier, nous devons remplacer les références qui s'y référait dans l'html. Dans le fichier HTML src/index.html, nous avions 4 références :
+Parce qu'on a concaténé de multiple fichiers sources dans un seul fichier, nous devons remplacer les références qui s'y référait dans l'html. Dans le fichier HTML src/index.html, nous avions 4 références :
 
 ```html
 <head>
@@ -258,7 +258,7 @@ Nous avons automatisé une énorme quantité de travail du workflow :
 | serve| gulp-connect | grunt-contrib-connect |
 | refresh-browser| gulp-livereload | grunt-contrib-watch (built in) |
 
-# Terminé le fichier de construction
+# Terminer le fichier de construction
 
 Nous terminons avec une liste de tâches que nous pouvons lancer. Ici sont les tâches de "haut niveau", c'est à dire, celles qui sont habituellement appelées depuis la ligne de commande :
 
@@ -268,147 +268,145 @@ Nous terminons avec une liste de tâches que nous pouvons lancer. Ici sont les t
 | build| clean, scripts, styles, images, html | Minifie, concatène, compresse les fichiers sources, puis les déplace dans le dossier *build*. |
 | watch| live-reload, serve | C'est la tâche que vous lancez lorsque vous travaillez sur un projet, elle s'exécute en tâche de fond surveillant chaque changement, puis reconstruit le projet dans le dossier build, actualise le serveur et rafrachit le navigateur pour vous. |
 
-# What else can build tools do for us?
+# Qu'est-ce que les outils de construction peuvent faire d'autre pour nous ?
 
-We’ve automated the workflow that we defined earlier, but build tools can do lots more. Here are a few examples.
+Nous avons automatisé le workflow que nous avions défini plus tôt, mais les outils de construction peuvent faire bien plus. Voici quelques exemples.
 
 ## Linting
 
-Linting, also known as static analysis, is the automated inspection of your source code (files in src). Think of it as having a more experienced colleague checking your work and making sure that you haven’t made any common mistakes.
+Linting, aussi appelé analyse statique, est une inspection automatique de votre source code (les fichier dans *src*). C'est comme si vous aviez un collègue plus expérimenté qui vérifiait votre travail et s'assurait que vous ne commettez pas d'erreurs communes.
 
-JavaScript can be automatically checked using a tool called jshint. This can check for common performance, security, and stylistic problems. Following the recommendations of jshint makes your code standards-compliant, and protects you from common clangers.
+Le code Javascript peut être automatiquement vérifié en utilisant un outil appelé *jshint*. Il peux vérifier les erreurs communes de performances, de sécurité et de style. Suivre les recommandations de Jshint permet de rendre votre code conforme aux standards.
 
-Similarly, CSS can be linted using tools like csslint. This can help you to automatically detect whether you’ve used invalid or deprecated rules. It can also help you to make more efficient CSS that the browser can use without friction.
+Il en est de même pour le code CSS qui peut être vérifié en utilisant des outils tels que Csslint. Cela peux vous aider à automatiquement détecter si vous utilisez des règles dépréciées ou invalides. Il peut également vous aider à réaliser des CSS plus efficaces et mieux exécuter par votre navigateur.
 
-HTML can also be linted!
+L'HTML peut également être vérifié !
 
-I generally recommend obeying every recommendation that linters make - as legendary programmer John Carmack once put it, "If you have to explain it to the computer, you’ll probably have to explain it to your colleagues."
+Je recommande généralement de suivre toutes les recommandations que le linters fait - Comme le légendaire programmeur John Carmack l'a dit "Si vous avez à l'expliquer à l'ordinateur, vous aurez à l'expliquer à vos collègues."
 
-All linters can be "tuned" to your specific needs - for example, if you are breaking one rule for a good reason, then you can tell your linter to ignore it.
+Tous les linters peuvent être modifié aux spécificités de votre code - par exemple, si vous cassez une règle pour une bonne raison, alors vous pourrez dire à votre linter de l'ignorer.
 
-Here are some example tools you could use:
+Voici quelques exemples que vous pouvez utiliser :
 
-| Functionality	| Gulp plugin | Grunt plugin
+| Fonctionnalité	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
 | Lint css| gulp-csslint | grunt-contrib-csslint |
 | Lint javascript| gulp-jshint | grunt-contrib-jshint |
 | Verify html| gulp-htmlhint | grunt-htmlhint |
 
-## CSS preprocessing
+## CSS pré-processing
 
-CSS is great but it’s fiddly. A preprocessor makes CSS far easier to work with. I use LESS day-to-day, but there are many others, including Sass and Stylus. All preprocessors add features like variables, mixins, and so forth, which greatly reduce the amount of code you need to write and make it far easier to maintain.
+CSS est génial mais il est délicat et verbeux à l'usage. Un pre-processeur permet de faire des CSS bien plus facilement. J'utilise LESS quotidiennement, mais il y en a plusieurs autres comme Sass et Stylus. Tous les pré-processeurs ont pour fonctionnalités l'ajout de variables, de mixins (sorte de fonctions) etc. ce qui diminue grandement la quantité de code que vous avez besoin d'écrire.
 
-Using a preprocessor, the styles task can transform styles into raw CSS. This means that you would never need to edit raw CSS; you could work entirely in the far more pleasant world of LESS (or whichever you prefer).
+Lorsqu'on utilise un pre-processeur, la tâche "styles" peut s'occuper de les compiler en CSS brute. Ce qui signifie que vous n'avez jamais à éditer du CSS brute. Vous pouvez travailler complètement dans le monde bien plus plaisant de Less, Sass ou Stylus.
 
-| Functionality	| Gulp plugin | Grunt plugin
+
+| Fonctionnalité	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
 | LESS to CSS| gulp-less | grunt-contrib-less |
 
-## Script preprocessing (transpiling)
+## Script pré-processing (transpiler)
 
-Instead of plain JavaScript, you might be using something like CoffeeScript. You would need a transpiling stage, which converts from CoffeeScript into JavaScript.
+Plutôt que d'écrire du Javascript, vous pouvez écrire en utilisant du CoffeeScript. Vous pouvez avoir besoin d'une étape de transpilation (Note de Benoit : terme utilisé pour compiler d'un langage vers un autre langage de même degré d'abstraction), qui convertit le CoffeScript vers du Javascript.
 
-You might also be using a more cutting-edge version of JavaScript than is available in current web browsers. At the time of writing, ES6 is a forthcoming version of JavaScript that is not available for general usage in many web browsers. Therefore, we can use tools to transpile it into ES5.
+Vous pouvez également utiliser une version plus récente de Javascript qui est disponible dans les derniers navigateurs web. A leur ou j'écris ces lignes ES6 n'est pas encore supporté par tous les navigateurs. Par conséquent vous pouvez utiliser des outils qui le transpile en ES5 avec un outil tel que babel.
 
-Once you have these tools in your workflow, you would have your CoffeeScript or ES6 code in src, and standard ES5 code in build. It makes debugging a little more difficult, but it can be worth it if you want to use cutting edge features.
+Lorsque vous avez ces outils dans votre workflow, vous pouvez avoir votre code CoffeeScript ou ES6 dans le dossier *src* qui est automatiquement transpilé dans le dossier *build* en ES5. Il rend le débuggage un peu plus compliqué, mais il permet d'utiliser les dernières fonctionnalités.
 
-| Functionality	| Gulp plugin | Grunt plugin
+| Fonctionnalité	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
-| CoffeeScript transpiler| gulp-coffee | grunt-contrib-coffee |
-| ES6 transpiler| gulp-babel | grunt-babel |
+| CoffeeScript transpileur| gulp-coffee | grunt-contrib-coffee |
+| ES6 transpileur| gulp-babel | grunt-babel |
 
-## Push to server
+## Pousser vers le serveur
 
-Build tools can even be used for deployment. There are all sorts of options here and it is out of our scope to cover them in detail, so here are a few examples:
+Les outils de construction peuvent également être utilisé pour le déploiement. Il y a plusieurs sorts d'option mais cela dépasse notre périmètre de les couvrir en détails, voici cependant quelques exemples :
 
-| Functionality	| Gulp plugin | Grunt plugin
+| Fonctionnalité	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
 | FTP | gulp-ftp | grunt-ftp-deploy |
 | Github pages| gulp-git-pages | grunt-gh-pages |
 | rsync | gulp-rsync | grunt-rsync |
 
-# Best practice
+# Meilleurs pratique
 
-Generally, you can use a build tool for any automation task. As with any software, build tools are open to misuse, however, so here are some guidelines to help you to make sure you are using the build tool as it was intended.
+Généralement, vous pouvez utiliser un outils de construction pour n'importe quelle tâche d'automatisation. Comme tout logiciel, les outils de construction peuvent engendrer de mauvaises utilisations. Cependant voici quelques règles pour vous aider à les utiliser comme ils ont été pensé.
 
-## Never edit anything in the build directory
+## Ne jamais éditer le moindre fichier du dossier *build*
 
-You should never manually edit anything in the build directory. Similarly, your build tool should never modify anything in the src directory.
+Vous ne devez jamais editer le moindre fichier dans le dossier *build*. Réciproquement, votre outil de construction ne doit rien modifier dans le dossier des fichiers sources *src*.
 
-If there is anything that you have to do in the build directory, you can almost certainly find a way to get the tool to do it for you.
+Si quelques chose doit être fait dans le dossier *build*, vous pouvez a coup sûr trouver une solution pour le faire faire par l'outil pour vous.
 
-## Never let your build tool modify anything in the src directory
+## Ne jamais laisser votre outil de construction modifier le moindre fichier du dossier src   
 
-Conversely, if your build tool modifies your src directory, you are going to have a bad time. Such behaviour breaks the "pipeline" approach and can create circular actions that never fully resolve. Therefore, you need to be confident that your build tool will stay out of the src directory entirely.
+Inversement, si votre outil de construction modifie votre dossier *src*, vous aller passé un sale quart d'heure. Ce genre de comportement casse l'approche workflow et peut créer des actions circulaires. Par conséquent vous devez vous assurer que votre outil de construction ne touche jamais le contenu du dossier *src*.
 
-Think of it like this: src is yours, build belongs to your build tool.
+Pensez comme ceci : *src* est à vous, *build* appartient à votre outil de construction.
 
-## Short, sharp, composable tasks
+## Rester concis
 
-Whilst you CAN create tasks that are huge and have a large amount of code, it is usually better to separate these into smaller tasks and compose them using task dependencies.
+Même si vous pouvez créer d'énorme tâche avec beaucoup de code, il est conseillé de les séparer en de plus petite tâche et d'utiliser les dépendances de tâche.
 
-## Your normal workflow should be encapsulated by a single task
+## Votre workflow normal doit être encapsulé dans une seule tâche
 
-You shouldn’t need to be constantly running a bunch of separate tasks. Instead, one task should rely upon or kick off the subtasks that it needs. Generally, you should use some kind of watch and run it in the background. As you do your normal work, it will detect changes, and then run everything it needs to.
+Vous ne devez pas constamment lancer un paquet de tâches séparées. A la place, une tâche reposer sur un ensemble de sous tâches. Généralement, vous devez utiliser les tâches *watch* en arrière plan. Si vous stoppez constamment votre tâche *watch* pour executer un emsemble de tâches extérieur, vous devriez considérer sérieusement de mettre ces tâches dans votre tâche principale *default*.
 
-If you’re finding yourself constantly having to stop your watch task and run things, then consider putting them into your main (default) task.
+## Séparer les tâches qui n'ont rien a voir avec votre workflow
 
-## Have tasks that aren’t part of your main workflow as separate tasks
+Inversement, pour les tâches qui ne font pas parties de votre workflow ne les intégrez pas dans votre workflow principal.
 
-Conversely, for tasks that aren’t part of your regular workflow, don’t have the main workflow call them.
+## Ne stockez pas vos codes d'accès en clair
 
-For example, you don’t want to deploy every tiny little tinker you make in your local workspace. Therefore, you might have a task like deploy that you only call once you’ve done all of your testing and you’re confident that it’s time to go live.
+Lorsqu'on parle de déploiement, il peut être tentant de stocker les mots de passes et les tockens d'identifications dans votre fichier de configuration. C'est généralement une très mauvaise idée d'un point de vue sécuritaire. Si une personne accède à votre fichier de configuration il peut compromètre votre système.
 
-## Don’t store credentials in plain text
+Un traitement complet des questions de sécurité est en dehors du cadre de ce livre, mais il est déjà suffisant de dire qu'il ne faut pas stocker en clair vos codes d'accès dans vos fichiers de configuration.
 
-Speaking of deployments, it might be tempting to store things like passwords or authentication tokens in your build file. This is generally a bad move from a security perspective - if someone accesses your build file, they could compromise your live systems.
+## Débuguer avec les fichiers "source maps"
 
-A full treatment of security issues is outside of the scope of this book, but suffice to say, don’t store credentials in plain text and certainly don’t keep them directly in your build file.
+si vous avez "compilé" (minifié et concaténé) le code Javascript dans la construction, il seront alors différent de votre code dans *src*. Les espaces blanc et retours à la ligne sont supprimés, les noms de variable raccourcies, bref plein de changement qui vont rendre difficile le debugage. Les *sources maps* peuvent alors vous aider. La *source map* contient des informations sur votre fichier source original. Les navigateur comme Chrome et Firefox supporte les source maps et vous permettent de debuguer comme si vous utilisez le fichier original. C'est vraiment pratique car vous tester avec le même code que l'utilisateur final va avoir, mais vous debuguer comme s'il s'agissait du fichier original.
 
-## Debugging with source maps
+Il en est de même pour les pre-processeurs CSS, car ces derniers aussi supporte les *sources maps*.
 
-If you have "compiled" (minified, concatenated) JavaScript code in build, it will look different to your code in src. It will have had whitespace removed, variable names shortened - all sorts of changes that make it hard to debug. You can use a source map to help you here. A source map holds information about your original source files. Browsers like Chrome and Firefox support source maps, and enable you to debug as if you were using your original code. This is really handy as it means you are testing the same code the user would receive, but debugging it in its original form.
+## Etre idiomatique
 
-Similarly, with a CSS preprocessor like LESS or SaSS, the CSS in build is different to the CSS in src. LESS and SaSS support source maps as well, so you can use the same approach.
+Essayer d'être idiomatique. C'est à dire que vous devez suivre les conventions suivient par les autres développeurs de projet similaire. Cela aura beaucoup d'avantages :
 
-## Being idiomatic
+* Il sera plus facile d'appliquer les extraits de code trouvé en ligne
+* Il sera plus facile d'expliquer aux autres votre code
+* Vous ne réinventerez pas la roue !
 
-Try to ensure that your project is idiomatic. By that, I mean that you should follow the conventions that other people use for similar projects. This has the following benefits:
+Il y a deux manières de faire cela. La première, consiste à cloner un repository existant et de la modifier pour correspondre à vos besoins. N'hésitez pas à cloner le code source d'exemple de ce livre depuis https://github.com/gavD/5ss-build-tools.
 
-* Easier to apply code snippets you find online
-* Easier to explain to people than some bespoke system
-* The wheel remains un-reinvented!
+La deuxième option est d'utiliser un outil d'échaffaudage (*scaffolding*). Ces outils créent un squelette de projet contenant les outils, dépendances et une structure prête à l'emploi.
 
-There are a couple of ways you could go about this. Firstly, you could clone an existing repository and modify it to suit your needs. Feel free to clone the sample source code for this book from https://github.com/gavD/5ss-build-tools.
+Si vous commencer une nouvelle application, Yeoman est un super outil d'échaffaudage qui utilise des générateurs pour vous généré une structure de projet adequate et vous lancer rapidement dans le développement. Il supporte une énorme gamme de types de projet. Par exemple, construisez-vous une application AngularJS ? Alors utilisez le générateur Angular de Yeoman. De même pour un projet PhoneGap par exemple. Peu importe ce que vous construisez, il y a une grande chance qu'un générateur Yeoman existe pour cela.
 
-The second option is to use a scaffolding tool. These are tools that create a "skeleton" project for your app that has the tools you will need installed and ready to use. So, you don’t have to create the build and src directories, and you don’t have to create your build file - your scaffolding tool does it all for you. Handy!
+## Voir également : Browserify
 
-If you’re starting with a brand-new app, Yeoman is a great scaffolding tool that uses generators to get you up and running with a project structure. It supports a huge range of project types. For example, are you building an AngularJS app? Then use the yeoman angular generator! Working on a PhoneGap project? Then use the yeoman phonegap generator! No matter what you are building, there is likely to be a Yeoman generator that can help you to get started.
+Aller voir Browserify. Ce n'est pas un outil de construction comme on peut le l'imaginer, mais il offre une approche minimaliste au Workflow de transformation Javascript.
 
-## See also: Browserify
+# Aller de l'avant et construisez !
 
-Check out Browserify. It’s not a build tool as such, but it offers a nice minimalist approach to the JavaScript asset pipeline.
+Dans ce livre, nous avons commencé par regarder les workflows commun en développement web. Nous avons ensuite approfondi ce qu'était un outil de construction, ce qu'était un fichier de construction, et ce qu'étaient les tâches. Puis nous avons vu de bout en bout la création de tâche pour automatiser le workflow.
 
-# Go forth and build!
+Merci de m'avoir, j'espère que ce livre aura été une introduction utile au monde merveilleux des outils de construction !
 
-In this book, we started out by looking at common web development workflows. We then went on to look at how we can improve upon that workflow. We then took a detailed look at what a build tool is, what a build file is, and what tasks are. We then went through creating some tasks to automate the workflow.
 
-Thanks for reading, I hope that this book has been a useful introduction to the wonderful world of build tools!
-
-# Further reading
+# A lire également
 
 * James Cryer’s Pro Grunt.js
 * Travis Maynard’s Getting Started with Gulp
 
-# Thanks
+# Remerciement
 
-Many thanks to the following proof readers for valuable insights and corrections:
+Je remercie les correcteurs éprouvé suivant pour leur relecture  :
 * Nate Abele
 * Andrew Canham
 * Kathryn Davies
 * Aryella Lacerda
 * John Mercer
 
-# Download as PDF
+# Télécharger au format PDF (version anglaise)
 
 [Download as PDF](http://radify.io/downloads/Using-Build-Tools.pdf)
