@@ -4,7 +4,7 @@ Author : [Gavin Davies](https://github.com/gavD)
 
 > Regardez l'article original sur [le blog de Radify.io "Using front-end build tools"](http://radify.io/blog/using-build-tools/)
 
-> Il est publié sur Github dans le but de permettre sa traduction et son amélioration. Libre à vous de soumettre vos Pull Request ou de discuter des erreurs présentes.
+> Il est publié sur Github dans le but de permettre sa traduction et son amélioration. Libre à vous de soumettre vos Pull Requests ou de discuter des erreurs présentes.
 
 # Introduction
 
@@ -12,15 +12,15 @@ Ce livre s'adresse aux intégrateurs qui font également du développement front
 
 Depuis les années 2000, le développement web est devenu plus sophistiqué. Cela a mené à plus de complexité, et nous sommes plusieurs à trouver qu'on doit désormais travaillé avec beaucoup de concepts. Cela peut être un peu intimidant (J'ai souvent souhaité moi même que le rythme du progrès ralentisse !).
 
-Pour prendre l'avantage de cette sophistication tout en réduisant sa complexité, les développeurs front-end utilisent des outils. Ces derniers nous permettent de travailler à un plus haut niveau et d'automatiser les tâches répétitives, ainsi qu'économiser du temps et produire des résultats plus sophistiqué. L'automatisation rationnalise nos processus, nous permettant d'être focalisé sur l'aspect créatif de notre travail plutôt que de passer des heures empêtré dans les tâches pénible.
+Pour avoir l'avantage de cette sophistication tout en réduisant sa complexité, les développeurs front-end utilisent des outils. Ces derniers nous permettent de travailler à un plus haut niveau et d'automatiser les tâches répétitives, ainsi qu'économiser du temps et produire des résultats plus sophistiqué. L'automatisation rationnalise nos processus, nous permettant d'être focalisé sur l'aspect créatif de notre travail plutôt que de passer des heures empêtré dans les tâches pénible.
 
-Dans ce petit livre, nous verrons certains outils de construction (*build tools*), ce qu'ils peuvent faire pour vous, et comment commencer à les utiliser. J'utiliserai des outils spécifique, mais ce livre expliquera les concepts généraux et non leur particularité. Après tout, chaque outils de construction est bien documenté en ligne et au format papier. A la place, ce livre à pour but premier de définir ce que sont les outils de construction et comment assembler des flux de travail *workflows* efficace avec eux.
+Dans ce petit livre, nous verrons certains outils de construction (*build tools*), ce qu'ils peuvent faire pour vous, et comment commencer à les utiliser. J'utiliserai des outils spécifique, mais ce livre expliquera les concepts généraux et non leurs particularités. Après tout, chaque outil de construction est bien documenté en ligne et au format papier. A la place, ce livre à pour but premier de définir ce que sont les outils de construction et comment assembler des flux de travail *workflows* efficace avec eux.
 
-Le but de ce livre est qu'une fois l'avoir lu, vous puissiez amériorer vos workflows en incorporant les outils de construction. J'ai pour but de vous donner la confiance et les connaissances nécessaire pour plonger dans le puissant et flexible monde de ces outils, de devenir plus productif et au final de prendre plaisir dans votre travail.
+Le but de ce livre est qu'une fois lu, vous puissiez amériorer vos *workflows* en incorporant les outils de construction. J'ai pour but de vous donner la confiance et les connaissances nécessaire pour plonger dans le puissant et flexible monde de ces outils, de devenir plus productif et au final de prendre plaisir dans votre travail.
 
 # Parlons des workflows
 
-Un Workflow est une liste de tâches effectuer les unes après les autres. Chacun a un workflow différent, et vous pouvez avoir plusieurs workflows pour différents aspect de votre rôle. Nous allons étudier le workflow du développement web (front) et comment l'optimiser.
+Un Workflow est une liste de tâches effectuées les unes après les autres. Chacun a un workflow différent, et vous pouvez avoir plusieurs workflows pour différents aspect de votre rôle. Nous allons étudier le workflow du développement web (front) et comment l'optimiser.
 
 ## Workflow basique en developpement web
 
@@ -30,21 +30,21 @@ Dans le développement de sites web (webfront) et d'applications (webapp), vous 
 
 > Ne vous inquiétez pas si votre workflow est différent. J'ai juste sélectionné les tâches communes. Les principes de ce livre s'appliqueront peu importe votre workflow exacte.
 
-Il y a un certains problèmes avec ce workflow simpliste.
+Il y a un quelques problèmes avec ce workflow simpliste.
 
-* La taille des fichiers - Il n'y a pas de minification des fichiers sources (*assets*), l'application s'exécutera sera plus lentement qu'elle devrait.
+* La taille des fichiers - Il n'y a pas de minification des fichiers sources (*assets*), l'application s'exécutera plus lentement qu'elle devrait.
 * Consistence - Pousser sur un serveur peut être sujet à erreurs, les fichiers sources peuvent avoir été mis en cache, le transfert peut planter etc.
-* Rapidité du workflow - Pousser et rafraichir manuellement les fichiers prend du temps et vous fait sortir du workflow.
+* Rapidité du workflow - Pousser et rafraichir manuellement les fichiers prend du temps.
 
 Rajoutons quelques tâches supplémentaires à ce workflow pour corriger ces problèmes.
 
 # Créons un processus de transformations des fichiers sources (*asset pipeline*)
 
-Pour résourdre les problèmes identifié dans le workflow basique, nous pouvons incorporer la compression, la minification, et la concatenation. La minification diminu la taille du code en reduisant notamment les noms des variables et des fonctions. La compression diminue la taille des fihciers au niveau binaire. La concatisation combine de multiple fichiers en un seul, reduisant le nombre de requête http nécessaire ce qui améliore la vitesse de téléchargement. Rajoutons ces tâches dans le processus :
+Pour résourdre les problèmes identifiés dans le workflow basique, nous pouvons incorporer la compression, la minification, et la concatenation. La minification diminue la taille du code en reduisant notamment les noms des variables et des fonctions. La compression diminue la taille des fichiers au niveau binaire. La concatisation combine de multiple fichiers en un seul, réduisant le nombre de requêtes http nécessaire ce qui améliore la vitesse de téléchargement. Rajoutons ces tâches dans le processus :
 
 ![alt text](img/workflow-asset-pipeline.png?raw=true "Schema 1")
 
-Cette approche, communément appelée "asset pipeline" (je prend toutes idées de traduction simple en français autre que "processus de transformations des fichiers sources" 😜), prend les fichiers sources depuis un chemin d'entré, les transforment et les délivrent en sorti dans un dossier de detination. Nous verrons comment structurer et automatiser cela.
+Cette approche, communément appelée "asset pipeline" (je prend toutes idées de traduction simple en français autre que "processus de transformations des fichiers sources" 😜), prend les fichiers sources depuis un chemin d'entré, les transforment et les délivrent en sortie dans un dossier de destination. Nous verrons comment structurer et automatiser cela.
 
 Une convention commune consiste à séparer les dossiers racines de votre projet. Le premier est nommé *src*, qui contient le code source - les fichiers que vous éditez. Le second est nommé *build*, qui contient les fichiers généré et délivré à l'utilisateur final. Vous n'éditez jamais rien directement dans le dossier *build*. La localisation exacte n'est pas importante mais ce livre part du principe que le projet est sauvegardé dans /home/user/myproject sur OSX/Linux ou C:\Users\user\myproject sur Windows.
 
@@ -55,16 +55,16 @@ Une convention commune consiste à séparer les dossiers racines de votre projet
 | Sources	/home/user/myproject/src | C:\Users\user\myproject\src |
 | Build	/home/user/myproject/build | C:\Users\user\myproject\build |
 
-Lorsque *build* et *src* sont séparés, déplacer tous les fichiers dans le dossier *src*. Ils contiendra les fichiers que vous allez éditer. Tout ce qui sera dans le dossier build seront généré par votre outils de construction - Nous n'éditons jamais les fichiers du dossier build directement. Pas touche !
+Lorsque *build* et *src* sont séparés, déplacer tous les fichiers dans le dossier *src*. Ils contiendra les fichiers que vous allez éditer. Tout ce qui sera dans le dossier build sera généré par votre outil de construction - Nous n'éditons jamais les fichiers du dossier build directement. Pas touche !
 
-> C'est mieux de tester ce qui se rapproche le plus possible de ce que l'utilisateur recevra. Par conséquent, c'est une bonne pratique de tester le projet depuis le dossier *build*, et non pas dans *src*, cela permet d'intercepter tout problèmes que la transformation peut avoir introduit.
+> C'est mieux de tester ce qui se rapproche le plus possible de ce que l'utilisateur recevra. Par conséquent, c'est une bonne pratique de tester le projet depuis le dossier *build*, et non pas dans *src*, cela permet d'intercepter tout problème que la transformation peut avoir introduit.
 
-Traiter des logiciels de gestion de version ne fait pas parti de ce livre, mais je vais faire une suggestion : Lorsqu'on utilise un outil tel que Git, Mercurial, ou Subversion, ignorez le dossier *build* des fichiers versionné. Vous ne voulez pas commiter le moindre fichier du dossier *build* - Il est a considérer comme volatile. Commitez uniquement les fichiers sources. Cela permet de garder les logs de commit  propres et épurées.
+Traiter des logiciels de gestion de version ne fait pas parti de ce livre, mais je vais faire une suggestion : Lorsqu'on utilise un outil tel que Git, Mercurial, ou Subversion, ignorez le dossier *build* des fichiers versionné. Vous ne voulez pas commiter le moindre fichier du dossier *build* - Il est a considérer comme volatile. Commitez uniquement les fichiers sources. Cela permet de garder les logs de commit propres et épurés.
 
 
 > Pour en apprendre plus sur Git, je vous conseille [Version Control with Git by Ryan Taylor](http://www.fivesimplesteps.com/products/version-control-with-git)
 
-Voici comment va ressembler le workflow des fichiers sources :
+Voici a quoi va ressembler le workflow des fichiers sources :
 
 ![alt text](img/workflow-asset-pipeline-build-level.png?raw=true "Schema 1")
 
@@ -103,19 +103,19 @@ Introduisons maintenant le monde merveilleux des outils de construction !
 
 # Workflows automatisé avec les outils de construction
 
-Les logiciels de construction *build tool* automatisent la transformation du code source dans un délivrable. A chaque fois qu'un changement est réalisé dans le code source, l'outil de construction doit se lancer - habituellement depuis le terminal en ligne de commande. L'outil de construction définit comment nous implémentons le workflow suivant :
+Les logiciels de construction *build tool* automatisent la transformation du code source dans un délivrable. A chaque fois qu'un changement est réalisé dans le code source, l'outil de construction doit se lancer - habituellement depuis le terminal en ligne de commande. L'outil de construction définit comment nous implémentons le workflow :
 
 ![alt text](img/automated-workflows-asset-pipeline-with-tool.png?raw=true "Schema 1")
 
 ## Outils de construction disponibles
 
-Il y a plusieurs outils de construction disponibles. Ce livre ce focalise sur le web front et par conséquent sur ceux dédiés à l'HTML, les CSS et le Javascript. Nous nous focaliserons sur Grunt et Gulp, car ce sont les deux les plus populaire. Il y en a beaucoup d'autres, comme Brocoli, Middleman, et Brunch, mais les principes de ce livre s'appliquent à tous les outils de construction.
+Il y a plusieurs outils de construction disponibles. Ce livre se focalise sur le web front et par conséquent sur ceux dédiés à l'HTML, les CSS et le Javascript. Nous nous focaliserons sur Grunt et Gulp, car ce sont les deux les plus populaire. Il y en a beaucoup d'autres, comme Brocoli, Middleman, et Brunch, mais les principes de ce livre s'appliquent à tous les outils de construction.
 
-> Si vos besoins sont simple, le gestionnaire de packages NPM peut être utilisé comme outil de construction  - NPM avec Broserify peut être une combinaison puissante . Voir http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/ pour plus de précisions.
+> Si vos besoins sont simple, le gestionnaire de packages NPM peut être utilisé comme outil de construction  - NPM avec Broserify peut être une combinaison puissante. Voir http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/ pour plus de précisions.
 
 ## Le fichier de construction
 
-Le fichier de construction *build file* dit à l'outil de construction ce qu'il doit faire. Il définit une liste de tâches que l'outil de construction doit réaliser. Dans Grunt, ce fihcier est appelé Gruntfile.js. Dans Gulp, il est appelé Gulpfile.js. Nous suivrons la règle consistant à mettre ce fichier à la racine du projet, au dessus des dossiers *src* et *build*.
+Le fichier de construction *build file* dit à l'outil de construction ce qu'il doit faire. Il définit une liste de tâches que l'outil de construction doit réaliser. Dans Grunt, ce fichier est appelé Gruntfile.js. Dans Gulp, il est appelé Gulpfile.js. Nous suivrons la règle consistant à mettre ce fichier à la racine du projet, au dessus des dossiers *src* et *build*.
 
 | Item	| OSX/Linux | Windows
 | ------------- |:-------------|:-------------|
@@ -127,9 +127,9 @@ Le fichier de construction *build file* dit à l'outil de construction ce qu'il 
 ## Tâches
 L'outil de construction lance les tâches. Une tâche est simplement une action ou une liste d'action qui peuvent être réalisées. Par exemple, une tâche peut être "copy les fichiers du dossier *src* dans le dossier *build*".
 
-Dans la plupart des outils de construction, les tâches sont composables, ce qui signifie qu'elles peuvent dépendre ou être déléguer à d'autres tâches. Par exemple la tâche copy-assets qui copie les fichiers sources peut être dépendante de la tâches clean qui en amont supprimera les fichiers déjà présent. L'avantage de la composabilité est que le code dans la tâche de suppression des fichiers *clean* n'a pas à être répétée à chaque fois qu'on à besoin de l'appeler.
+Dans la plupart des outils de construction, les tâches sont composables, ce qui signifie qu'elles peuvent dépendre ou être déléguer à d'autres tâches. Par exemple la tâche copy-assets qui copie les fichiers sources peut être dépendante de la tâche clean qui en amont supprimera les fichiers déjà présent. L'avantage de la composabilité est que le code dans la tâche de suppression des fichiers *clean* n'a pas à être répétée à chaque fois qu'on à besoin de l'appeler.
 
-Les tâches sont stockés dans le fichier de construction, voici un exemple de fichier de construction contenant certaines tâches :
+Les tâches sont stockées dans le fichier de construction, voici un exemple de fichier de construction contenant certaines tâches :
 
 ![alt text](img/automated-workflows-build-file.png?raw=true "Schema 1")
 
@@ -138,7 +138,7 @@ Les tâches sont stockés dans le fichier de construction, voici un exemple de f
 Une tâche à généralement ces attributs :
 
 #### Nom
-Le nom de la tâche. La plupart des tâches peuvent être lancée séparemment depuis l'outil de ligne de commande. Par exemple, grunt ou gulp clean lance la tâche de suppression des fichiers.
+Le nom de la tâche. La plupart des tâches peuvent être lancées séparemment depuis l'outil de ligne de commande. Par exemple, grunt ou gulp clean lance la tâche de suppression des fichiers.
 
 #### Description
 Certains outils de construction permettent l'ajout d'une description de la tâche. Permettant de documenter la tâche auprès de votre équipe.
@@ -157,9 +157,9 @@ Nous allons créer un fichier de construction qui automatise le workflow que nou
 
 Ces tâches seront :
 
-* Supprimer le dossier build
-* Compresser et minifier les fichiers sources
-* Copier les résultats transformés dans le dossier *build*
+* Supprimer le dossier build.
+* Compresser et minifier les fichiers sources.
+* Copier les résultats transformés dans le dossier *build*.
 
 Voici l'ordre d'exécution de ces tâches :
 
@@ -175,7 +175,7 @@ Cette tâche simple supprime le contenu du dossier *build*.
 
 ### Tâche build - Appele les sous tâches
 
-Elle dépendant de la tâche clean par le mécanisme décrit plus tôt, donc lorsque build est appelé, la tâche clean est exécuté d'abord. Après cela, la tâche build délègue aux tâches scripts, styles, images et html.
+Elle dépend de la tâche clean par le mécanisme décrit plus tôt, donc lorsque build est appelé, la tâche clean est exécuté d'abord. Après cela, la tâche build délègue aux tâches scripts, styles, images et html.
 
 ### Tâche scripts - Transforme les fichiers javascript
 
@@ -222,9 +222,9 @@ Les étapes de design et d'édition du code source ne sont pas automatisable - s
 
 ## Tâche watch - Automatiser votre automatisation
 
-Désormais, vous lancez probablement l'outil de construction à chaque fois que vous réalisez un changement. C'est plutôt pénible, et enclin aux erreurs - Il est probable que vous allez oublier de lancer l'outil ou de relancer le navigateur et d'être embrouillé à vous demander pourquoi les changements n'apparaissent pas... Je sais, j'ai déjà fait ça!
+Désormais, vous lancez probablement l'outil de construction à chaque fois que vous réalisez un changement. C'est plutôt pénible, et enclin aux erreurs - Il est probable que vous allez oublier de lancer l'outil ou de relancer le navigateur et être embrouillé à vous demander pourquoi les changements n'apparaissent pas... Je sais, ça met déjà arrivé !
 
-Heureusement, nous pouvons automatiser cela. Nous allons créer une nouvelle tâche, watch, dans laquelle nous surveillerons le dossier *src*, et s'il y a un changement à l'intérieur, elle lancera automatique la tâche *default*, qui a pour dépendance la tâche *build* :
+Heureusement, nous pouvons automatiser cela. Nous allons créer une nouvelle tâche, watch, dans laquelle nous surveillerons le dossier *src*, et s'il y a un changement à l'intérieur, elle lancera automatiquement la tâche *default*, qui a pour dépendance la tâche *build* :
 
 ![alt text](img/automating-your-workflow-2.png?raw=true "Schema 1")
 
@@ -238,7 +238,7 @@ Au lieu de pousser le code vers un serveur, les outils de construction vous perm
 
 ![alt text](img/automating-your-workflow-4.png?raw=true "Schema 1")
 
-> Ne vous inquiétez pas si vous espériez qu'on convrira le déploiement dans notre workflow de construction, nous parlerons du déploiement plus tard.
+> Ne vous inquiétez pas si vous espériez qu'on convre le déploiement dans notre workflow de construction, nous en parlerons plus tard.
 
 ## Tâche refresh-browser: Rafrachit le navigateur
 
@@ -264,17 +264,17 @@ Nous terminons avec une liste de tâches que nous pouvons lancer. Ici sont les t
 
 | Tâche	        |   Dépendances     |   Description |
 | ------------- |:-------------     |:------------- |
-| default| build | Tâche par défaut que votre outil de construction appel lorsqu'il ne recois pas de paramètre. Dans notre cas elle délègue tout simplement à la tâche build. |
+| default| build | Tâche par défaut que votre outil de construction appelle lorsqu'il ne reçoit pas de paramètre. Dans notre cas elle délègue tout simplement à la tâche build. |
 | build| clean, scripts, styles, images, html | Minifie, concatène, compresse les fichiers sources, puis les déplace dans le dossier *build*. |
 | watch| live-reload, serve | C'est la tâche que vous lancez lorsque vous travaillez sur un projet, elle s'exécute en tâche de fond surveillant chaque changement, puis reconstruit le projet dans le dossier build, actualise le serveur et rafrachit le navigateur pour vous. |
 
-# Qu'est-ce que les outils de construction peuvent faire d'autre pour nous ?
+# Qu'est-ce que les outils de construction peuvent faire d'autres pour nous ?
 
 Nous avons automatisé le workflow que nous avions défini plus tôt, mais les outils de construction peuvent faire bien plus. Voici quelques exemples.
 
 ## Linting
 
-Linting, aussi appelé analyse statique, est une inspection automatique de votre source code (les fichier dans *src*). C'est comme si vous aviez un collègue plus expérimenté qui vérifiait votre travail et s'assurait que vous ne commettez pas d'erreurs communes.
+Linting, aussi appelé analyse statique, est une inspection automatique de votre source code (les fichiers dans *src*). C'est comme si vous aviez un collègue plus expérimenté qui vérifiait votre travail et s'assurait que vous ne commettez pas d'erreurs communes.
 
 Le code Javascript peut être automatiquement vérifié en utilisant un outil appelé *jshint*. Il peux vérifier les erreurs communes de performances, de sécurité et de style. Suivre les recommandations de Jshint permet de rendre votre code conforme aux standards.
 
@@ -307,9 +307,9 @@ Lorsqu'on utilise un pre-processeur, la tâche "styles" peut s'occuper de les co
 
 ## Script pré-processing (transpiler)
 
-Plutôt que d'écrire du Javascript, vous pouvez écrire en utilisant du CoffeeScript. Vous pouvez avoir besoin d'une étape de transpilation (Note de Benoit : terme utilisé pour compiler d'un langage vers un autre langage de même degré d'abstraction), qui convertit le CoffeScript vers du Javascript.
+Plutôt que d'écrire du Javascript, vous pouvez écrire en utilisant du CoffeeScript. Vous pouvez avoir besoin d'une étape de transpilation (terme utilisé pour compiler d'un langage vers un autre langage de même degré d'abstraction), qui convertit le CoffeScript vers du Javascript.
 
-Vous pouvez également utiliser une version plus récente de Javascript qui est disponible dans les derniers navigateurs web. A leur ou j'écris ces lignes ES6 n'est pas encore supporté par tous les navigateurs. Par conséquent vous pouvez utiliser des outils qui le transpile en ES5 avec un outil tel que babel.
+Vous pouvez également utiliser une version plus récente de Javascript qui est disponible dans les derniers navigateurs web. A l'heure où j'écris ces lignes ES6 n'est pas encore supporté par tous les navigateurs. Par conséquent vous pouvez utiliser des outils qui le transpile en ES5 avec un outil tel que *babel*.
 
 Lorsque vous avez ces outils dans votre workflow, vous pouvez avoir votre code CoffeeScript ou ES6 dans le dossier *src* qui est automatiquement transpilé dans le dossier *build* en ES5. Il rend le débuggage un peu plus compliqué, mais il permet d'utiliser les dernières fonctionnalités.
 
@@ -320,7 +320,7 @@ Lorsque vous avez ces outils dans votre workflow, vous pouvez avoir votre code C
 
 ## Pousser vers le serveur
 
-Les outils de construction peuvent également être utilisé pour le déploiement. Il y a plusieurs sorts d'option mais cela dépasse notre périmètre de les couvrir en détails, voici cependant quelques exemples :
+Les outils de construction peuvent également être utilisé pour le déploiement. Il y a plusieurs sortes d'options mais cela dépasse notre périmètre de les couvrir en détails, voici cependant quelques exemples :
 
 | Fonctionnalité	| Gulp plugin | Grunt plugin
 | ------------- |:-------------|:-------------|
@@ -334,9 +334,9 @@ Généralement, vous pouvez utiliser un outils de construction pour n'importe qu
 
 ## Ne jamais éditer le moindre fichier du dossier *build*
 
-Vous ne devez jamais editer le moindre fichier dans le dossier *build*. Réciproquement, votre outil de construction ne doit rien modifier dans le dossier des fichiers sources *src*.
+Vous ne devez jamais éditer le moindre fichier dans le dossier *build*. Réciproquement, votre outil de construction ne doit rien modifier dans le dossier des fichiers sources *src*.
 
-Si quelques chose doit être fait dans le dossier *build*, vous pouvez a coup sûr trouver une solution pour le faire faire par l'outil pour vous.
+Si quelques chose doit être fait dans le dossier *build*, vous pouvez à coup sûr trouver une solution pour le faire faire par l'outil pour vous.
 
 ## Ne jamais laisser votre outil de construction modifier le moindre fichier du dossier src   
 
@@ -346,11 +346,11 @@ Pensez comme ceci : *src* est à vous, *build* appartient à votre outil de cons
 
 ## Rester concis
 
-Même si vous pouvez créer d'énorme tâche avec beaucoup de code, il est conseillé de les séparer en de plus petite tâche et d'utiliser les dépendances de tâche.
+Même si vous pouvez créer d'énormes tâches avec beaucoup de code, il est conseillé de les séparer en de plus petite tâche et d'utiliser les dépendances de tâche.
 
 ## Votre workflow normal doit être encapsulé dans une seule tâche
 
-Vous ne devez pas constamment lancer un paquet de tâches séparées. A la place, une tâche reposer sur un ensemble de sous tâches. Généralement, vous devez utiliser les tâches *watch* en arrière plan. Si vous stoppez constamment votre tâche *watch* pour executer un emsemble de tâches extérieur, vous devriez considérer sérieusement de mettre ces tâches dans votre tâche principale *default*.
+Vous ne devez pas constamment lancer un paquet de tâches séparées. A la place, la tâche doit reposer sur un ensemble de sous tâches. Généralement, vous devez utiliser les tâches *watch* en arrière plan. Si vous stoppez constamment votre tâche *watch* pour executer un emsemble de tâches extérieur, vous devriez considérer sérieusement de mettre ces tâches dans votre tâche principale *default*.
 
 ## Séparer les tâches qui n'ont rien a voir avec votre workflow
 
@@ -358,13 +358,13 @@ Inversement, pour les tâches qui ne font pas parties de votre workflow ne les i
 
 ## Ne stockez pas vos codes d'accès en clair
 
-Lorsqu'on parle de déploiement, il peut être tentant de stocker les mots de passes et les tockens d'identifications dans votre fichier de configuration. C'est généralement une très mauvaise idée d'un point de vue sécuritaire. Si une personne accède à votre fichier de configuration il peut compromètre votre système.
+Lorsqu'on parle de déploiement, il peut être tentant de stocker les mots de passes et les tokens d'identifications dans votre fichier de configuration. C'est généralement une très mauvaise idée d'un point de vue sécuritaire. Si une personne accède à votre fichier de configuration il peut compromètre votre système.
 
 Un traitement complet des questions de sécurité est en dehors du cadre de ce livre, mais il est déjà suffisant de dire qu'il ne faut pas stocker en clair vos codes d'accès dans vos fichiers de configuration.
 
 ## Débuguer avec les fichiers "source maps"
 
-si vous avez "compilé" (minifié et concaténé) le code Javascript dans la construction, il seront alors différent de votre code dans *src*. Les espaces blanc et retours à la ligne sont supprimés, les noms de variable raccourcies, bref plein de changement qui vont rendre difficile le debugage. Les *sources maps* peuvent alors vous aider. La *source map* contient des informations sur votre fichier source original. Les navigateur comme Chrome et Firefox supporte les source maps et vous permettent de debuguer comme si vous utilisez le fichier original. C'est vraiment pratique car vous tester avec le même code que l'utilisateur final va avoir, mais vous debuguer comme s'il s'agissait du fichier original.
+Si vous avez "compilé" (minifié et concaténé) le code Javascript dans la construction, ils seront alors différent de votre code dans *src*. Les espaces blanc et retours à la ligne sont supprimés, les noms de variable raccourcies, bref plein de changement qui vont rendre difficile le debugage. Les *sources maps* peuvent alors vous aider. La *source map* contient des informations sur votre fichier source original. Les navigateurs comme Chrome et Firefox supportent les source maps et vous permettent de debuguer comme si vous utilisez le fichier original. C'est vraiment pratique car vous tester avec le même code que l'utilisateur final va avoir, mais vous debuguer comme s'il s'agissait du fichier original.
 
 Il en est de même pour les pre-processeurs CSS, car ces derniers aussi supporte les *sources maps*.
 
